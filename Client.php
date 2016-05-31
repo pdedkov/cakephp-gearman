@@ -58,6 +58,7 @@ class Client extends Base {
 	 *  Подключение к серверу
 	 *
 	 * @param bool $reconnect пепеподключение, если нужно
+	 * @throws Exception
 	 * @return bool
 	 */
 	protected function _connect($reconnect = true) {
@@ -105,6 +106,7 @@ class Client extends Base {
 	 * magic для вызовов методово
 	 * @param string $method название метода
 	 * @param array $arguments список агрументов
+	 * @return mixed
 	 */
 	public function __call($method, $arguments) {
 		return call_user_func_array([$this->_Client, $method], $arguments);
@@ -113,6 +115,7 @@ class Client extends Base {
 	/**
 	 * Запуск задачи на выполнение
 	 *
+	 * @param bool $force
 	 * @throws Exception
 	 * @return mixed
 	 */
@@ -175,8 +178,8 @@ class Client extends Base {
 
 	/**
 	 * callback на выполение обработки
-	 * @param GearmanTask $Task
-	 * @return bool
+	 * @param \GearmanTask $Task
+	 * @return int
 	 */
 	public function done(\GearmanTask $Task) {
 		$this->_out = unserialize($Task->data());
@@ -187,8 +190,9 @@ class Client extends Base {
 	/**
 	 * Обработка исключительных ситуаций
 	 *
-	 * @param GearmanTask $Task
+	 * @param \GearmanTask $Task
 	 * @throws AppException
+	 * @return int
 	 */
 	public function exception(\GearmanTask $Task) {
 		$e = unserialize($Task->data());
@@ -197,6 +201,6 @@ class Client extends Base {
 			throw $e;
 		}
 
-		return false;
+		return GEARMAN_SUCCESS;
 	}
 }
