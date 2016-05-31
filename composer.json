@@ -1,0 +1,24 @@
+{
+    "name": "pdedkov/cakephp-gearman",
+    "description": "gearman cakephp plugin",
+    "type": "cakephp-plugin",
+    "license": "MIT",
+    "version": "1.0",
+    "authors": [
+        {
+            "name": "Pavel E. Dedkov",
+            "email": "pavel.dedkov@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">= 5.4.0",
+        "composer/installers": "~1.0",
+        "pdedkov/config": "dev-master",
+        "pdedkov/db": "dev-master",
+        "ext-gearman": "*"
+    },
+    "extra": {
+	"installer-name": "Gearman"
+    }
+}

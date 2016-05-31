@@ -1,0 +1,10 @@
+<?php
+Configure::write('Gearman.servers', array(
+	array(
+		'host'	=> 'localhost',
+		'port'	=> 4730
+	)
+));
+
+// базовый сервер для менеджера
+Configure::write('Gearman.server', Configure::read('Gearman.servers')[0]);
