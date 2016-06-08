@@ -2,11 +2,10 @@
 namespace Gearman;
 
 use Config\Object as Base;
+use GearmanJob;
 
 class Worker extends Base {
 	const WORKLOAD_TEST = 'test worker';
-
-	protected $_timeLimit = null;
 
 	/**
 	 * Время запуска worker-а
@@ -128,13 +127,13 @@ class Worker extends Base {
 
 	/**
 	 * Работаем!
+	 *
+	 * @param GearmanJob $Job
+	 * @return bool
 	 */
-	public function doJob($Job) {
+	public function doJob(GearmanJob $Job) {
 		// загружаем данные из задачи
 		$this->_in = unserialize($Job->workload());
-		if (!empty($this->_timeLimit)) {
-			set_time_limit($this->_timeLimit);
-		}
 
 		return true;
 	}
@@ -142,9 +141,10 @@ class Worker extends Base {
 	/**
 	 * Рестарт worker-а
 	 *
+	 * @param GearmanJob $Job
 	 * @return bool
 	 */
-	public function halt($job) {
-		$job->sendComplete(true);
+	public function halt(GearmanJob $Job) {
+		return $Job->sendComplete(true);
 	}
 }

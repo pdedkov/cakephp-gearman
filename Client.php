@@ -2,6 +2,7 @@
 namespace Gearman;
 
 use Config\Object as Base;
+use GearmanTask;
 
 class Client extends Base {
 	const WORKLOAD_TEST = 'test client';
@@ -178,10 +179,10 @@ class Client extends Base {
 
 	/**
 	 * callback на выполение обработки
-	 * @param \GearmanTask $Task
+	 * @param GearmanTask $Task
 	 * @return int
 	 */
-	public function done(\GearmanTask $Task) {
+	public function done(GearmanTask $Task) {
 		$this->_out = unserialize($Task->data());
 
 		return GEARMAN_SUCCESS;
@@ -190,11 +191,11 @@ class Client extends Base {
 	/**
 	 * Обработка исключительных ситуаций
 	 *
-	 * @param \GearmanTask $Task
+	 * @param GearmanTask $Task
 	 * @throws AppException
 	 * @return int
 	 */
-	public function exception(\GearmanTask $Task) {
+	public function exception(GearmanTask $Task) {
 		$e = unserialize($Task->data());
 
 		if (is_a($e, 'Exception')) {

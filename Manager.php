@@ -44,9 +44,10 @@ class Manager extends Base {
 	/**
 	 * Получение списка worker-ов
 	 *
+	 * @param string $worker имя воркеров, параметры которого нам нужно получить
 	 * @return array массив доступных worker-ов с их загрузкой и тд
 	 */
-	public function getWorkers() {
+	public function getWorkers($worker = null) {
 		// получаем статистику по worker-ам
 		\App::uses('CakeSocket', 'Network');
 
@@ -56,8 +57,8 @@ class Manager extends Base {
 
 		$workers = array();
 
-		// делаем 3 замера с интервалом в 2 секунды для получение точного результата
-		for ($i = 0; $i <= 3; $i++) {
+		// делаем 2 замера с интервалом в 1 секунду для получение точного результата
+		for ($i = 0; $i <= 2; $i++) {
 			$Socket->write("status\n");
 			$content = $Socket->read(50000);
 
@@ -77,11 +78,11 @@ class Manager extends Base {
 					$workers[$title] = $temp;
 				}
 			}
-			sleep(2);
+			sleep(1);
 		}
 
 		$Socket->disconnect();
 
-		return $workers;
+		return $worker ? $workers[$worker]: $workers;
 	}
 }
