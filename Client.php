@@ -129,6 +129,20 @@ class Client extends Base {
 	}
 
 	/**
+	 * Возвращает количество доступных для обработки воркеров
+	 *
+	 * @return int кол-во воркеров
+	 */
+	public function available() {
+		$info = (new Manager())->getWorkers($this->_function($this->_function));
+
+		// оставляем запас, а количество запускаемых задач берём из количества доступных / 2
+		$available = intval(floor(($info[3] - $info[1])/2));
+
+		return $available < 1 ? 1 : $available;
+	}
+	
+	/**
 	 * Определяем название метода gearmand
 	 *
 	 * @param string $function имя функции
